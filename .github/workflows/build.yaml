@@ -8,20 +8,21 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: true
-        
-    - name: Add msbuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.0
+    - name: Checkout
+      uses: actions/checkout@v4
 
-    - uses: nuget/setup-nuget@v1
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v2
+
+    - uses: nuget/setup-nuget@v2
       with:
         nuget-version: latest
 
-    - run: nuget restore AudioPlaybackConnector.sln
+    - name: Restore sln with nuget
+      run: nuget restore AudioPlaybackConnector.sln
 
-    - run: |
+    - name: Start build jobs
+      run: |
         Start-Job -Init ([ScriptBlock]::Create("Set-Location '$pwd'")) -Script {
           msbuild AudioPlaybackConnector.sln "-p:Configuration=Release;Platform=x64" }
         Get-Job | Wait-Job | Receive-Job
