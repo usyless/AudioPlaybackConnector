@@ -37,7 +37,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	}
 	if (!supported)
 	{
-		TaskDialog(nullptr, nullptr, _(L"Unsupported Operating System"), nullptr, _(L"AudioPlaybackConnector is not supported on this operating system version."), TDCBF_OK_BUTTON, TD_ERROR_ICON, nullptr);
+		TaskDialog(nullptr, nullptr, L"Unsupported Operating System", nullptr, L"AudioPlaybackConnector is not supported on this operating system version.", TDCBF_OK_BUTTON, TD_ERROR_ICON, nullptr);
 		return EXIT_FAILURE;
 	}
 
@@ -73,7 +73,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	SetupSvgIcon();
 
 	g_nid.hWnd = g_niid.hWnd = g_hWnd;
-	wcscpy_s(g_nid.szTip, _(L"AudioPlaybackConnector"));
+	wcscpy_s(g_nid.szTip, L"AudioPlaybackConnector");
 	UpdateNotifyIcon();
 
 	WM_TASKBAR_CREATED = RegisterWindowMessageW(L"TaskbarCreated");
@@ -200,15 +200,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 void SetupFlyout()
 {
 	TextBlock textBlock;
-	textBlock.Text(_(L"All connections will be closed.\nExit anyway?"));
+	textBlock.Text(L"All connections will be closed.\nExit anyway?");
 	textBlock.Margin({ 0, 0, 0, 12 });
 
 	static CheckBox checkbox;
 	checkbox.IsChecked(g_reconnect);
-	checkbox.Content(winrt::box_value(_(L"Reconnect on next start")));
+	checkbox.Content(winrt::box_value(L"Reconnect on next start"));
 
 	Button button;
-	button.Content(winrt::box_value(_(L"Exit")));
+	button.Content(winrt::box_value(L"Exit"));
 	button.HorizontalAlignment(HorizontalAlignment::Right);
 	button.Click([](const auto&, const auto&) {
 		g_reconnect = checkbox.IsChecked().Value();
@@ -234,7 +234,7 @@ void SetupMenu()
 	settingsIcon.Glyph(L"\xE713");
 
 	MenuFlyoutItem settingsItem;
-	settingsItem.Text(_(L"Bluetooth Settings"));
+	settingsItem.Text(L"Bluetooth Settings");
 	settingsItem.Icon(settingsIcon);
 	settingsItem.Click([](const auto&, const auto&) {
 		winrt::Windows::System::Launcher::LaunchUriAsync(Uri(L"ms-settings:bluetooth"));
@@ -244,7 +244,7 @@ void SetupMenu()
 	closeIcon.Glyph(L"\xE8BB");
 
 	MenuFlyoutItem exitItem;
-	exitItem.Text(_(L"Exit"));
+	exitItem.Text(L"Exit");
 	exitItem.Icon(closeIcon);
 	exitItem.Click([](const auto&, const auto&) {
 		if (g_audioPlaybackConnections.size() == 0)
@@ -291,7 +291,7 @@ void SetupMenu()
 
 winrt::fire_and_forget ConnectDevice(DevicePicker picker, DeviceInformation device)
 {
-	picker.SetDisplayStatus(device, _(L"Connecting"), DevicePickerDisplayStatusOptions::ShowProgress | DevicePickerDisplayStatusOptions::ShowDisconnectButton);
+	picker.SetDisplayStatus(device, L"Connecting", DevicePickerDisplayStatusOptions::ShowProgress | DevicePickerDisplayStatusOptions::ShowDisconnectButton);
 
 	bool success = false;
 	std::wstring errorMessage;
@@ -326,11 +326,11 @@ winrt::fire_and_forget ConnectDevice(DevicePicker picker, DeviceInformation devi
 				break;
 			case AudioPlaybackConnectionOpenResultStatus::RequestTimedOut:
 				success = false;
-				errorMessage = _(L"The request timed out");
+				errorMessage = L"The request timed out";
 				break;
 			case AudioPlaybackConnectionOpenResultStatus::DeniedBySystem:
 				success = false;
-				errorMessage = _(L"The operation was denied by the system");
+				errorMessage = L"The operation was denied by the system";
 				break;
 			case AudioPlaybackConnectionOpenResultStatus::UnknownFailure:
 				success = false;
@@ -341,7 +341,7 @@ winrt::fire_and_forget ConnectDevice(DevicePicker picker, DeviceInformation devi
 		else
 		{
 			success = false;
-			errorMessage = _(L"Unknown error");
+			errorMessage = L"Unknown error";
 		}
 	}
 	catch (winrt::hresult_error const& ex)
@@ -366,7 +366,7 @@ winrt::fire_and_forget ConnectDevice(DevicePicker picker, DeviceInformation devi
 
 	if (success)
 	{
-		picker.SetDisplayStatus(device, _(L"Connected"), DevicePickerDisplayStatusOptions::ShowDisconnectButton);
+		picker.SetDisplayStatus(device, L"Connected", DevicePickerDisplayStatusOptions::ShowDisconnectButton);
 	}
 	else
 	{
