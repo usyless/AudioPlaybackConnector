@@ -39,6 +39,5 @@ bool g_reconnect = false;
 std::vector<std::wstring> g_lastDevices;
 
 #include "Util.hpp"
-#include "I18n.hpp"
 #include "SettingsUtil.hpp"
 #include "Direct2DSvg.hpp"
