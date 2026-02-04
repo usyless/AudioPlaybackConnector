@@ -29,10 +29,6 @@ jobs:
 
     - uses: actions/upload-artifact@v4
       with:
-        name: AudioPlaybackConnector64
+        name: AudioPlaybackConnector.exe
         path: x64/Release/AudioPlaybackConnector64.exe
-
-    - uses: actions/upload-artifact@v4
-      with:
-        name: AudioPlaybackConnector64
-        path: x64/Release/AudioPlaybackConnector64.pdb
+        
