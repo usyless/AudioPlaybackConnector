@@ -1,43 +1,25 @@
 #pragma once
 
 constexpr auto CONFIG_NAME = L"AudioPlaybackConnector.json";
-constexpr auto BUFFER_SIZE = 4096;
 
-void DefaultSettings()
-{
+void DefaultSettings() {
 	g_reconnect = false;
 	g_lastDevices.clear();
 }
 
-void LoadSettings()
-{
-	try
-	{
+void LoadSettings() {
+	try {
 		DefaultSettings();
 
-		wil::unique_hfile hFile(CreateFileW((usylibpp::windows::current_executable_path_or_default().remove_filename() / CONFIG_NAME).c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr));
-		THROW_LAST_ERROR_IF(!hFile);
-
-		std::string string;
-		while (1)
-		{
-			size_t size = string.size();
-			string.resize(size + BUFFER_SIZE);
-			DWORD read = 0;
-			THROW_IF_WIN32_BOOL_FALSE(ReadFile(hFile.get(), string.data() + size, BUFFER_SIZE, &read, nullptr));
-			string.resize(size + read);
-			if (read == 0)
-				break;
-		}
-
-		std::wstring utf16 = usylibpp::windows::to_wstr_or_default(string);
+		std::wstring utf16 = usylibpp::windows::to_wstr_or_default(
+			usylibpp::files::read_as_bytes_or_default(sylibpp::windows::current_executable_path_or_default().remove_filename() / CONFIG_NAME)
+		);
 		auto jsonObj = JsonObject::Parse(utf16);
 		g_reconnect = jsonObj.Lookup(L"reconnect").GetBoolean();
 
 		auto lastDevices = jsonObj.Lookup(L"lastDevices").GetArray();
 		g_lastDevices.reserve(lastDevices.Size());
-		for (const auto& i : lastDevices)
-		{
+		for (const auto& i : lastDevices) {
 			if (i.ValueType() == JsonValueType::String)
 				g_lastDevices.push_back(std::wstring(i.GetString()));
 		}
@@ -45,16 +27,13 @@ void LoadSettings()
 	CATCH_LOG();
 }
 
-void SaveSettings()
-{
-	try
-	{
+void SaveSettings() {
+	try {
 		JsonObject jsonObj;
 		jsonObj.Insert(L"reconnect", JsonValue::CreateBooleanValue(g_reconnect));
 
 		JsonArray lastDevices;
-		for (const auto& i : g_audioPlaybackConnections)
-		{
+		for (const auto& i : g_audioPlaybackConnections) {
 			lastDevices.Append(JsonValue::CreateStringValue(i.first));
 		}
 		jsonObj.Insert(L"lastDevices", lastDevices);
