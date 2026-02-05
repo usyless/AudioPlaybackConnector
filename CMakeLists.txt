@@ -87,7 +87,6 @@ target_compile_definitions(AudioPlaybackConnector PRIVATE
 target_compile_options(AudioPlaybackConnector PRIVATE
     /EHsc
     /W4
-    /GR
     /Zc:preprocessor
     /await:strict
     /permissive-
