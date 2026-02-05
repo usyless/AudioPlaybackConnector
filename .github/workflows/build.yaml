@@ -12,10 +12,10 @@ jobs:
 
     - name: Build project
       run: |
-        cmake -S . -B ./build \
-          -G Ninja \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_CXX_COMPILER=cl \
+        cmake -S . -B ./build `
+          -G Ninja `
+          -DCMAKE_BUILD_TYPE=Release `
+          -DCMAKE_CXX_COMPILER=cl `
           -DCMAKE_EXPORT_COMPILE_COMMANDS=OFF
         
         cmake --build ./build --config Release
