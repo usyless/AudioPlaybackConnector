@@ -9,11 +9,10 @@ project(
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY ON)
 set(CMAKE_SKIP_INSTALL_RULES ON)
 
-# Use later to put version in directly
-# configure_file(
-#     "${PROJECT_SOURCE_DIR}/AudioPlaybackConnector.rc.in"
-#     "${CMAKE_CURRENT_BINARY_DIR}/AudioPlaybackConnector.rc"
-# )
+configure_file(
+    "${PROJECT_SOURCE_DIR}/AudioPlaybackConnector.rc.in"
+    "${PROJECT_SOURCE_DIR}/AudioPlaybackConnector.rc"
+)
 
 add_executable(AudioPlaybackConnector
     "${PROJECT_SOURCE_DIR}/AudioPlaybackConnector.cpp"
