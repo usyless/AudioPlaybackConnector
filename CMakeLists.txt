@@ -38,6 +38,10 @@ target_compile_features(AudioPlaybackConnector PRIVATE
     cxx_std_23
 )
 
+set_property(TARGET AudioPlaybackConnector PROPERTY
+    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+)
+
 target_precompile_headers(AudioPlaybackConnector PRIVATE
     "${PROJECT_SOURCE_DIR}/pch.hpp"
 )
@@ -68,6 +72,7 @@ target_compile_definitions(AudioPlaybackConnector PRIVATE
     _WINDOWS
     UNICODE
     _UNICODE
+    
     $<$<CONFIG:Debug>:
         _DEBUG
     >
@@ -82,6 +87,9 @@ target_compile_options(AudioPlaybackConnector PRIVATE
     /GR
     /Zc:preprocessor
     /await:strict
+    /permissive-
+    /WX
+    /sdl
 
     # /Zi
     # /DEBUG
