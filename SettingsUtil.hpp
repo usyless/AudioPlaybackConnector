@@ -12,7 +12,7 @@ void LoadSettings() {
 		DefaultSettings();
 
 		std::wstring utf16 = usylibpp::windows::to_wstr_or_default(
-			usylibpp::files::read_as_bytes_or_default(sylibpp::windows::current_executable_path_or_default().remove_filename() / CONFIG_NAME)
+			usylibpp::files::read_as_bytes_or_default(usylibpp::windows::current_executable_path_or_default().remove_filename() / CONFIG_NAME)
 		);
 		auto jsonObj = JsonObject::Parse(utf16);
 		g_reconnect = jsonObj.Lookup(L"reconnect").GetBoolean();
