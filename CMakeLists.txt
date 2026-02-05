@@ -16,8 +16,11 @@ configure_file(
 
 add_executable(AudioPlaybackConnector
     "${PROJECT_SOURCE_DIR}/AudioPlaybackConnector.cpp"
+    "${PROJECT_SOURCE_DIR}/AudioPlaybackConnector.manifest"
+    "${PROJECT_SOURCE_DIR}/AudioPlaybackConnector.rc"
 )
 
+# Brings WIL in
 include(FetchContent)
 
 FetchContent_Declare(
@@ -33,6 +36,10 @@ target_link_libraries(AudioPlaybackConnector PRIVATE usylibpp::usylibpp)
 
 target_compile_features(AudioPlaybackConnector PRIVATE
     cxx_std_23
+)
+
+target_precompile_headers(AudioPlaybackConnector PRIVATE
+    "${PROJECT_SOURCE_DIR}/pch.hpp"
 )
 
 target_compile_options(AudioPlaybackConnector PRIVATE
