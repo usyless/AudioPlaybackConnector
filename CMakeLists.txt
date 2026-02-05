@@ -9,15 +9,17 @@ project(
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY ON)
 set(CMAKE_SKIP_INSTALL_RULES ON)
 
+set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
+
 configure_file(
-    "${PROJECT_SOURCE_DIR}/AudioPlaybackConnector.rc.in"
-    "${PROJECT_SOURCE_DIR}/AudioPlaybackConnector.rc"
+    "${SRC_DIR}/AudioPlaybackConnector.rc.in"
+    "${SRC_DIR}/AudioPlaybackConnector.rc"
 )
 
 add_executable(AudioPlaybackConnector
-    "${PROJECT_SOURCE_DIR}/AudioPlaybackConnector.cpp"
-    "${PROJECT_SOURCE_DIR}/AudioPlaybackConnector.manifest"
-    "${PROJECT_SOURCE_DIR}/AudioPlaybackConnector.rc"
+    "${SRC_DIR}/AudioPlaybackConnector.cpp"
+    "${SRC_DIR}/AudioPlaybackConnector.manifest"
+    "${SRC_DIR}/AudioPlaybackConnector.rc"
 )
 
 # Brings WIL in
@@ -43,7 +45,7 @@ set_property(TARGET AudioPlaybackConnector PROPERTY
 )
 
 target_precompile_headers(AudioPlaybackConnector PRIVATE
-    "${PROJECT_SOURCE_DIR}/pch.h"
+    "${SRC_DIR}/pch.h"
 )
 
 target_link_options(AudioPlaybackConnector PRIVATE
