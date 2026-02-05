@@ -12,7 +12,7 @@ void LoadSettings() {
 		DefaultSettings();
 
 		std::wstring utf16 = usylibpp::windows::to_wstr_or_default(
-			usylibpp::files::read_as_bytes_or_default(usylibpp::windows::current_executable_path_or_default().remove_filename() / CONFIG_NAME)
+			usylibpp::files::read_as_bytes_or_default(usylibpp::windows::current_executable_path_or_default().get().parent_path() / CONFIG_NAME)
 		);
 		auto jsonObj = JsonObject::Parse(utf16);
 		g_reconnect = jsonObj.Lookup(L"reconnect").GetBoolean();
@@ -38,7 +38,7 @@ void SaveSettings() {
 		}
 		jsonObj.Insert(L"lastDevices", lastDevices);
 
-		wil::unique_hfile hFile(CreateFileW((usylibpp::windows::current_executable_path_or_default().remove_filename() / CONFIG_NAME).c_str(), GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr));
+		wil::unique_hfile hFile(CreateFileW((usylibpp::windows::current_executable_path_or_default().get().parent_path() / CONFIG_NAME).c_str(), GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr));
 		THROW_LAST_ERROR_IF(!hFile);
 
 		std::string utf8 = usylibpp::windows::to_utf8_or_default(jsonObj.Stringify());
