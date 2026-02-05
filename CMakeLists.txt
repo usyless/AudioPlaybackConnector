@@ -43,7 +43,7 @@ set_property(TARGET AudioPlaybackConnector PROPERTY
 )
 
 target_precompile_headers(AudioPlaybackConnector PRIVATE
-    "${PROJECT_SOURCE_DIR}/pch.hpp"
+    "${PROJECT_SOURCE_DIR}/pch.h"
 )
 
 target_link_options(AudioPlaybackConnector PRIVATE
@@ -72,7 +72,7 @@ target_compile_definitions(AudioPlaybackConnector PRIVATE
     _WINDOWS
     UNICODE
     _UNICODE
-    
+
     $<$<CONFIG:Debug>:
         _DEBUG
     >
