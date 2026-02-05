@@ -42,6 +42,40 @@ target_precompile_headers(AudioPlaybackConnector PRIVATE
     "${PROJECT_SOURCE_DIR}/pch.hpp"
 )
 
+target_link_options(AudioPlaybackConnector PRIVATE
+    /SUBSYSTEM:WINDOWS
+
+    $<$<CONFIG:Debug>:
+        "/DEBUG"
+    >
+    $<$<CONFIG:Release>:
+        "/OPT:ICF"
+        "/OPT:REF"
+        # "/NODEFAULTLIB:libucrt.lib"
+    >
+)
+
+target_link_libraries(AudioPlaybackConnector PRIVATE
+    # $<$<CONFIG:Release>:
+    #     ucrt.lib
+    # >
+    comctl32.lib
+    shlwapi.lib
+)
+
+
+target_compile_definitions(AudioPlaybackConnector PRIVATE
+    _WINDOWS
+    UNICODE
+    _UNICODE
+    $<$<CONFIG:Debug>:
+        _DEBUG
+    >
+    $<$<CONFIG:Release>:
+        NDEBUG
+    >
+)
+
 target_compile_options(AudioPlaybackConnector PRIVATE
     /EHsc
     /W4
