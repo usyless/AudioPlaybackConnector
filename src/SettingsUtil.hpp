@@ -41,7 +41,7 @@ void SaveSettings() {
 		wil::unique_hfile hFile(CreateFileW((usylibpp::windows::current_executable_path_or_default().get().parent_path() / CONFIG_NAME).c_str(), GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr));
 		THROW_LAST_ERROR_IF(!hFile);
 
-		std::string utf8 = usylibpp::windows::to_utf8_or_default(jsonObj.Stringify());
+		std::string utf8 = usylibpp::windows::to_utf8_or_default(jsonObj.Stringify().c_str());
 		DWORD written = 0;
 		THROW_IF_WIN32_BOOL_FALSE(WriteFile(hFile.get(), utf8.data(), static_cast<DWORD>(utf8.size()), &written, nullptr));
 		THROW_HR_IF(E_FAIL, written != utf8.size());
