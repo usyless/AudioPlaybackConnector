@@ -65,6 +65,8 @@ target_link_libraries(AudioPlaybackConnector PRIVATE
     # >
     comctl32.lib
     shlwapi.lib
+    d2d1.lib
+    runtimeobject.lib
 )
 
 
