@@ -1,6 +1,5 @@
 #include "resource.h"
 
-#define APSTUDIO_READONLY_SYMBOLS
 #include "targetver.h"
 #define APSTUDIO_HIDDEN_SYMBOLS
 #include "windows.h"
