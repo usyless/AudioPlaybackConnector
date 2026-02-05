@@ -55,6 +55,7 @@ target_link_options(AudioPlaybackConnector PRIVATE
     $<$<CONFIG:Release>:
         "/OPT:ICF"
         "/OPT:REF"
+        "/LTCG"
         # "/NODEFAULTLIB:libucrt.lib"
     >
 )
@@ -107,6 +108,7 @@ target_compile_options(AudioPlaybackConnector PRIVATE
         /Oi
         /Oy
         /Gy
+        /GL
     >
 )
 

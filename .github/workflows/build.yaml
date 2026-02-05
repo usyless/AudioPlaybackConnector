@@ -22,5 +22,5 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: AudioPlaybackConnector.exe
-        path: build/build/AudioPlaybackConnector.exe
+        path: build/Release/AudioPlaybackConnector.exe
         
