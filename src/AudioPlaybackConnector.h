@@ -58,6 +58,7 @@ struct settings_json_t {
             auto utf8 = usylibpp::windows::to_utf8(dev);
             if (utf8) lastDevices.emplace_back(std::move(utf8.value()));
         }
+		return *this;
     }
 };
 
