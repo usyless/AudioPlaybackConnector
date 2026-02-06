@@ -36,6 +36,17 @@ FetchContent_MakeAvailable(usylibpp)
 
 target_link_libraries(AudioPlaybackConnector PRIVATE usylibpp::usylibpp)
 
+FetchContent_Declare(
+  glaze
+  GIT_REPOSITORY https://github.com/stephenberry/glaze.git
+  GIT_TAG main
+  GIT_SHALLOW TRUE
+)
+
+FetchContent_MakeAvailable(glaze)
+
+target_link_libraries(libdedupeify PRIVATE glaze::glaze)
+
 target_compile_features(AudioPlaybackConnector PRIVATE
     cxx_std_23
 )

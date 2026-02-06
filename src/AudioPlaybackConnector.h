@@ -35,8 +35,40 @@ NOTIFYICONIDENTIFIER g_niid = {
 	.cbSize = sizeof(g_niid)
 };
 UINT WM_TASKBAR_CREATED = 0;
-bool g_reconnect = false;
-std::vector<std::wstring> g_lastDevices;
+
+struct settings_json_t {
+    bool reconnect = false;
+    std::vector<std::string> lastDevices;
+
+    settings_json_t& operator=(const settings_t& rhs) {
+        reconnect = rhs.reconnect;
+
+        lastDevices.clear();
+        lastDevices.reserve(rhs.lastDevices.size());
+        for (const auto& dev : rhs.lastDevices) {
+            auto utf8 = usylibpp::windows::to_utf8(dev);
+            if (utf8) lastDevices.emplace_back(std::move(utf8.value()));
+        }
+        return *this;
+    }
+};
+struct settings_t {
+    bool reconnect = false;
+    std::vector<std::wstring> lastDevices;
+
+    settings_t& operator=(const settings_json_t& rhs) {
+        reconnect = rhs.reconnect;
+
+        lastDevices.clear();
+        lastDevices.reserve(rhs.lastDevices.size());
+        for (const auto& dev : rhs.lastDevices) {
+            auto wstr = usylibpp::windows::to_wstr(dev);
+            if (wstr) lastDevices.emplace_back(std::move(wstr.value()));
+        }
+        return *this;
+    }
+};
+settings_t g_Settings{};
 
 #include "SettingsUtil.hpp"
 #include "Direct2DSvg.hpp"

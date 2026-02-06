@@ -18,6 +18,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	UNREFERENCED_PARAMETER(nCmdShow);
 
+	usylibpp::init::set_utf8_locale();
+
 	g_hInst = hInstance;
 
 	winrt::init_apartment();
@@ -106,7 +108,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			connection.second.second.Close();
 			g_devicePicker.SetDisplayStatus(connection.second.first, {}, DevicePickerDisplayStatusOptions::None);
 		}
-		if (g_reconnect)
+		if (g_Settings.reconnect)
 		{
 			SaveSettings();
 			g_audioPlaybackConnections.clear();
@@ -178,13 +180,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	case WM_CONNECTDEVICE:
-		if (g_reconnect)
+		if (g_Settings.reconnect)
 		{
-			for (const auto& i : g_lastDevices)
+			for (const auto& i : g_Settings.lastDevices)
 			{
 				ConnectDevice(g_devicePicker, i);
 			}
-			g_lastDevices.clear();
+			g_Settings.lastDevices.clear();
 		}
 		break;
 	default:
@@ -204,14 +206,14 @@ void SetupFlyout()
 	textBlock.Margin({ 0, 0, 0, 12 });
 
 	static CheckBox checkbox;
-	checkbox.IsChecked(g_reconnect);
+	checkbox.IsChecked(g_Settings.reconnect);
 	checkbox.Content(winrt::box_value(L"Reconnect on next start"));
 
 	Button button;
 	button.Content(winrt::box_value(L"Exit"));
 	button.HorizontalAlignment(HorizontalAlignment::Right);
 	button.Click([](const auto&, const auto&) {
-		g_reconnect = checkbox.IsChecked().Value();
+		g_Settings.reconnect = checkbox.IsChecked().Value();
 		PostMessageW(g_hWnd, WM_CLOSE, 0, 0);
 	});
 

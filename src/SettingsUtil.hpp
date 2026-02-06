@@ -1,50 +1,41 @@
 #pragma once
 
 constexpr auto CONFIG_NAME = L"AudioPlaybackConnector.json";
+inline const auto config_file = usylibpp::windows::current_executable_path_or_default().get().parent_path() / CONFIG_NAME;
 
 void DefaultSettings() {
-	g_reconnect = false;
-	g_lastDevices.clear();
+	g_Settings = settings_t{};
 }
 
-void LoadSettings() {
-	try {
-		DefaultSettings();
+static inline constexpr glz::opts glz_opts{
+    .null_terminated = true,
+    .minified = false
+};
 
-		std::wstring utf16 = usylibpp::windows::to_wstr_or_default(
-			usylibpp::files::read_as_bytes_or_default(usylibpp::windows::current_executable_path_or_default().get().parent_path() / CONFIG_NAME)
-		);
-		auto jsonObj = JsonObject::Parse(utf16);
-		g_reconnect = jsonObj.Lookup(L"reconnect").GetBoolean();
+bool LoadSettings() {
+	DefaultSettings();
 
-		auto lastDevices = jsonObj.Lookup(L"lastDevices").GetArray();
-		g_lastDevices.reserve(lastDevices.Size());
-		for (const auto& i : lastDevices) {
-			if (i.ValueType() == JsonValueType::String)
-				g_lastDevices.push_back(std::wstring(i.GetString()));
-		}
+	settings_json_t data;
+	auto j = usylibpp::files::read_as_bytes(config_file);
+	if (!j) return false;
+
+	auto err = glz::read<glz_opts>(data, *j);
+	if (err) {
+		std::error_code ec;
+		std::filesystem::remove(config_file, ec);
+		return false;
 	}
-	CATCH_LOG();
+
+	g_Settings = data;
+	return true;
 }
 
-void SaveSettings() {
-	try {
-		JsonObject jsonObj;
-		jsonObj.Insert(L"reconnect", JsonValue::CreateBooleanValue(g_reconnect));
+bool SaveSettings() {
+	settings_json_t data = g_Settings;
+	
+	std::string json;
+	auto err = glz::write_json(data, json);
+	if (err) return false;
 
-		JsonArray lastDevices;
-		for (const auto& i : g_audioPlaybackConnections) {
-			lastDevices.Append(JsonValue::CreateStringValue(i.first));
-		}
-		jsonObj.Insert(L"lastDevices", lastDevices);
-
-		wil::unique_hfile hFile(CreateFileW((usylibpp::windows::current_executable_path_or_default().get().parent_path() / CONFIG_NAME).c_str(), GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr));
-		THROW_LAST_ERROR_IF(!hFile);
-
-		std::string utf8 = usylibpp::windows::to_utf8_or_default(jsonObj.Stringify().c_str());
-		DWORD written = 0;
-		THROW_IF_WIN32_BOOL_FALSE(WriteFile(hFile.get(), utf8.data(), static_cast<DWORD>(utf8.size()), &written, nullptr));
-		THROW_HR_IF(E_FAIL, written != utf8.size());
-	}
-	CATCH_LOG();
+	return usylibpp::files::write(config_file, json);
 }

@@ -17,6 +17,9 @@
 #include <unordered_map>
 #include <filesystem>
 
+// glaze
+#include <glaze/glaze.hpp>
+
 // wil
 #ifndef _DEBUG
 #define RESULT_DIAGNOSTICS_LEVEL 1
