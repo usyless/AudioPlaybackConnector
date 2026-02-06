@@ -31,9 +31,10 @@ bool LoadSettings() {
 }
 
 bool SaveSettings() {
-	static std::string json;
 	settings_json_t data;
 	data = g_Settings;
+
+	std::string json;
 
 	auto err = glz::write_json(data, json);
 	if (err) return false;
