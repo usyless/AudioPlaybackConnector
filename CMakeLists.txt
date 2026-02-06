@@ -45,7 +45,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(glaze)
 
-target_link_libraries(libdedupeify PRIVATE glaze::glaze)
+target_link_libraries(AudioPlaybackConnector PRIVATE glaze::glaze)
 
 target_compile_features(AudioPlaybackConnector PRIVATE
     cxx_std_23
