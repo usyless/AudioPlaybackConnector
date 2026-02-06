@@ -343,3 +343,6 @@ translate/generated
 
 AudioPlaybackConnector.rc
 *.bat
+build/
+.cache/
+compile_commands.json
