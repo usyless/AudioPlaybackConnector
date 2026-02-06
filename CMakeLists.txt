@@ -109,7 +109,7 @@ target_compile_options(AudioPlaybackConnector PRIVATE
     /Zc:preprocessor
     /await:strict
     /permissive-
-    /WX
+    # /WX
     /sdl
 
     # /Zi

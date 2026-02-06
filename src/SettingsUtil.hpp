@@ -1,9 +1,11 @@
 #pragma once
 
-constexpr auto CONFIG_NAME = L"AudioPlaybackConnector.json";
+#include "AudioPlaybackConnector.h"
+
+inline constexpr auto CONFIG_NAME = L"AudioPlaybackConnector.json";
 inline const auto config_file = usylibpp::windows::current_executable_path_or_default().get().parent_path() / CONFIG_NAME;
 
-void DefaultSettings() {
+inline void DefaultSettings() {
 	g_Settings = settings_t{};
 }
 
@@ -12,7 +14,7 @@ static inline constexpr glz::opts glz_opts{
     .minified = false
 };
 
-bool LoadSettings() {
+inline bool LoadSettings() {
 	DefaultSettings();
 
 	settings_json_t data;
@@ -30,7 +32,7 @@ bool LoadSettings() {
 	return true;
 }
 
-bool SaveSettings() {
+inline bool SaveSettings() {
 	settings_json_t data;
 	data = g_Settings;
 
