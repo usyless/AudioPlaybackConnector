@@ -2,7 +2,6 @@
 
 #include "resource.h"
 
-using namespace winrt::Windows::Data::Json;
 using namespace winrt::Windows::Devices::Enumeration;
 using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::Media::Audio;
