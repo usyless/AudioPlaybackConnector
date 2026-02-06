@@ -19,7 +19,7 @@ bool LoadSettings() {
 	auto j = usylibpp::files::read_as_bytes(config_file);
 	if (!j) return false;
 
-	auto err = glz::read<glz_opts>(data, *j);
+	auto err = glz::read<glz_opts>(data, j.value());
 	if (err) {
 		std::error_code ec;
 		std::filesystem::remove(config_file, ec);
@@ -32,7 +32,8 @@ bool LoadSettings() {
 
 bool SaveSettings() {
 	static std::string json;
-	settings_json_t data{g_Settings};
+	settings_json_t data;
+	data = g_Settings;
 
 	auto err = glz::write_json(data, json);
 	if (err) return false;

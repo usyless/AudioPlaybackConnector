@@ -49,7 +49,7 @@ struct settings_json_t {
     bool reconnect = false;
     std::vector<std::string> lastDevices;
 
-    settings_json_t(const settings_t& rhs) {
+    settings_json_t& settings_json_t::operator=(const settings_t& rhs) {
         reconnect = rhs.reconnect;
 
         lastDevices.clear();
