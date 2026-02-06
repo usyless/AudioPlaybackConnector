@@ -47,13 +47,14 @@ struct settings_json_t {
     bool reconnect = false;
     std::vector<std::string> lastDevices;
 
+    // this is using g_audioPlaybackConnections and not lastDevices from rhs
     settings_json_t& operator=(const settings_t& rhs) {
         reconnect = rhs.reconnect;
 
         lastDevices.clear();
-        lastDevices.reserve(rhs.lastDevices.size());
-        for (const auto& dev : rhs.lastDevices) {
-            auto utf8 = usylibpp::windows::to_utf8(dev);
+        lastDevices.reserve(g_audioPlaybackConnections.size());
+        for (const auto& dev : g_audioPlaybackConnections) {
+            auto utf8 = usylibpp::windows::to_utf8(dev.first);
             if (utf8) lastDevices.emplace_back(std::move(utf8.value()));
         }
 		return *this;
