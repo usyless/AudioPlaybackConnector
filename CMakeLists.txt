@@ -51,6 +51,12 @@ target_compile_features(AudioPlaybackConnector PRIVATE
     cxx_std_23
 )
 
+if(CMAKE_EXPORT_COMPILE_COMMANDS)
+    target_compile_options(AudioPlaybackConnector PRIVATE
+        -clang:-std=c++23 # fix clangd i think
+    )
+endif()
+
 set_property(TARGET AudioPlaybackConnector PROPERTY
     MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
 )
