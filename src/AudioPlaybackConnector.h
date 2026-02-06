@@ -36,14 +36,7 @@ NOTIFYICONIDENTIFIER g_niid = {
 };
 UINT WM_TASKBAR_CREATED = 0;
 
-struct settings_t;
-
-struct settings_json_t {
-    bool reconnect = false;
-    std::vector<std::string> lastDevices;
-
-    settings_json_t& operator=(const settings_t& rhs);
-};
+struct settings_json_t;
 
 struct settings_t {
     bool reconnect = false;
@@ -52,17 +45,21 @@ struct settings_t {
     settings_t& operator=(const settings_json_t& rhs);
 };
 
-inline settings_json_t& settings_json_t::operator=(const settings_t& rhs) {
-    reconnect = rhs.reconnect;
+struct settings_json_t {
+    bool reconnect = false;
+    std::vector<std::string> lastDevices;
 
-    lastDevices.clear();
-    lastDevices.reserve(rhs.lastDevices.size());
-    for (const auto& dev : rhs.lastDevices) {
-        auto utf8 = usylibpp::windows::to_utf8(dev);
-        if (utf8) lastDevices.emplace_back(std::move(utf8.value()));
+    settings_json_t(const settings_t& rhs) {
+        reconnect = rhs.reconnect;
+
+        lastDevices.clear();
+        lastDevices.reserve(rhs.lastDevices.size());
+        for (const auto& dev : rhs.lastDevices) {
+            auto utf8 = usylibpp::windows::to_utf8(dev);
+            if (utf8) lastDevices.emplace_back(std::move(utf8.value()));
+        }
     }
-    return *this;
-}
+};
 
 inline settings_t& settings_t::operator=(const settings_json_t& rhs) {
     reconnect = rhs.reconnect;
