@@ -57,10 +57,6 @@ if(CMAKE_EXPORT_COMPILE_COMMANDS)
     )
 endif()
 
-set_property(TARGET AudioPlaybackConnector PROPERTY
-    MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
-)
-
 target_precompile_headers(AudioPlaybackConnector PRIVATE
     "${SRC_DIR}/pch.h"
 )
