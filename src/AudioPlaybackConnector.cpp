@@ -276,7 +276,7 @@ void SetupMenu()
 	menu.Items().Append(settingsItem);
 	menu.Items().Append(exitItem);
 	menu.Opened([](const auto& sender, const auto&) {
-		auto menuItems = sender.as<MenuFlyout>().Items();
+		auto menuItems = sender.template as<MenuFlyout>().Items();
 		auto itemsCount = menuItems.Size();
 		if (itemsCount > 0)
 		{
