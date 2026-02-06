@@ -1,6 +1,6 @@
 #pragma once
 
-#include "targetver.h"
+#include <SDKDDKVer.h>
 
 // Windows Header Files
 #include <windows.h>
